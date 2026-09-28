@@ -6,7 +6,19 @@
  * touching a single component. No component should hardcode "SCENT LAB".
  */
 
-const rawNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "917569067363";
+/**
+ * Reads an env var, treating blank/whitespace-only values as absent.
+ *
+ * `??` is not enough here: a variable declared in a hosting dashboard can
+ * exist but be empty, and `"" ?? fallback` yields `""`. That reached
+ * `new URL("")` in layout metadata and failed the whole production build.
+ */
+function env(name: string, fallback: string): string {
+  const v = process.env[name];
+  return v !== undefined && v.trim() !== "" ? v.trim() : fallback;
+}
+
+const rawNumber = env("NEXT_PUBLIC_WHATSAPP_NUMBER", "917569067363");
 
 /** Strips formatting so wa.me always receives digits only. */
 export const WHATSAPP_NUMBER = rawNumber.replace(/\D/g, "");
@@ -19,17 +31,17 @@ const WHATSAPP_DISPLAY = (() => {
   return `+91 ${national.slice(0, 5)} ${national.slice(5)}`;
 })();
 
-const rawUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://scentlab.in";
+const rawUrl = env("NEXT_PUBLIC_SITE_URL", "https://scentlab.in");
 
 export const SITE_URL = rawUrl.replace(/\/$/, "");
 
 export const BRAND = {
   /** Short wordmark. Swap this to rebrand globally. */
-  name: process.env.NEXT_PUBLIC_BRAND_NAME ?? "SCENT LAB",
+  name: env("NEXT_PUBLIC_BRAND_NAME", "SCENT LAB"),
   /** Optional descriptor shown under the wordmark. */
   descriptor: "CANDLE STUDIO",
   tagline: "Made for slow evenings.",
-  city: process.env.NEXT_PUBLIC_CITY ?? "Bengaluru",
+  city: env("NEXT_PUBLIC_CITY", "Bengaluru"),
   country: "India",
   founded: "2026",
   /** Used for the footer copyright line. */
