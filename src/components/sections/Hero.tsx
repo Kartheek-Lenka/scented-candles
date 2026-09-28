@@ -8,6 +8,7 @@ import { BRAND } from "@/lib/constants";
 import { products } from "@/data/products";
 import { startingPrice } from "@/data/products";
 import { CandleArt } from "@/components/product/CandleArt";
+import { useProductModal } from "@/components/product/ProductModalProvider";
 import { Arrow } from "@/components/ui/Arrow";
 import { createWhatsAppLink, track } from "@/lib/whatsapp";
 import { formatPrice } from "@/lib/utils";
@@ -18,6 +19,7 @@ export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
   const hero = products[0];
+  const { openProduct } = useProductModal();
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -109,8 +111,14 @@ export function Hero() {
           style={{ y: reduceMotion ? 0 : candleY }}
           data-cursor="VIEW"
         >
-          <m.div
-            className="relative aspect-[3/4] h-full max-h-[38svh] w-auto max-w-full sm:max-h-[44svh] lg:max-h-[82svh]"
+          <m.button
+            type="button"
+            onClick={() => {
+              openProduct(hero);
+              track("product_view", { product: hero.id, source: "hero" });
+            }}
+            aria-label={`View ${hero.name} details`}
+            className="group/candle relative aspect-[3/4] h-full max-h-[38svh] w-auto max-w-full cursor-pointer rounded-2xl sm:max-h-[44svh] lg:max-h-[82svh] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink-800"
             initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 34, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 1.1, delay: 0.18, ease: EASE }}
@@ -188,7 +196,16 @@ export function Hero() {
                 {note}
               </m.span>
             ))}
-          </m.div>
+
+            {/* Visible affordance — the custom cursor is desktop-only, so touch
+                and keyboard users need a real on-canvas cue. */}
+            <span
+              className="pointer-events-none absolute bottom-4 left-1/2 flex -translate-x-1/2 translate-y-2 items-center gap-2 rounded-full bg-cream/90 px-4 py-2 text-[0.625rem] tracking-[0.16em] text-ink-800 uppercase opacity-0 backdrop-blur-sm transition-all duration-300 group-hover/candle:translate-y-0 group-hover/candle:opacity-100 group-focus-visible/candle:translate-y-0 group-focus-visible/candle:opacity-100"
+              aria-hidden="true"
+            >
+              View {hero.name}
+            </span>
+          </m.button>
         </m.div>
 
         {/* --- Support -------------------------------------------------- */}
