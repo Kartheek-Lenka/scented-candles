@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="14" fill="#171614" />
+  <g transform="translate(32 0)">
+    <ellipse cx="0" cy="22" rx="5.2" ry="6.6" fill="#FFC98A" opacity="0.28" />
+    <path d="M0 14c2.6 3.6 3.6 5.2 3.6 7.2A3.6 3.6 0 0 1 0 24.8a3.6 3.6 0 0 1-3.6-3.6c0-2 1-3.6 3.6-7.2Z" fill="#FFC98A" />
+  </g>
+  <rect x="16" y="28" width="32" height="4" rx="2" fill="#46362D" />
+  <path d="M19 32h26v18a4 4 0 0 1-4 4H23a4 4 0 0 1-4-4V32Z" fill="#FFF9F0" />
+  <rect x="23" y="38" width="18" height="9" rx="1.5" fill="none" stroke="#B8A99A" stroke-width="1" />
+  <text x="32" y="45" text-anchor="middle" font-family="Georgia, serif" font-size="6" fill="#46362D">SC</text>
+</svg>
